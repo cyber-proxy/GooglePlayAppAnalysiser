@@ -6,10 +6,19 @@ import OnlineDetector
 
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8') #改变标准输出的默认编码
 
+'''page'''
+MAXPAGE = 500
+
+'''category'''
+CATEGORY_APPLICATIONS = 11
+CATEGORY_TOOLS = 33
+categoryList = [CATEGORY_TOOLS, CATEGORY_APPLICATIONS]
+
+
 '''地址'''
 AppAnnieSite = "https://www.appannie.com/apps/google-play/top-chart/?country=US&category=11&device=&date=2019-03-27&feed=Free&rank_sorting_type=rank&page_number=0&page_size=100&table_selections=&metrics=grossing_rank,new_free_rank,category,all_avg,all_count,first_release_date,last_updated_date,est_download,est_revenue,dau&order_type=desc&order_by=free_rank"
 # "https://www.appannie.com/apps/google-play/top-chart/?country=US&category=11&device=&date=2019-03-27&feed=All&rank_sorting_type=rank&page_number=0&page_sie=500"
-AppAnnieAppAddr = "https://www.appannie.com/ajax/top-chart/table/?market=google-play&country_code=US&category=11&date=2019-03-28&rank_sorting_type=rank&page_size=500&order_type=desc"
+AppAnnieAppAddr = "https://www.appannie.com/ajax/top-chart/table/?market=google-play&country_code=US&category=%s&date=2019-03-28&rank_sorting_type=rank&page_size=500&order_type=desc"
 
 '''POST请求头'''
 POST_HEADERS = {
@@ -89,7 +98,7 @@ def login():
 '''请求并解析给定类别的所有app'''
 def getAppsAddres():
     print "getApps..."
-    response = requests.post(AppAnnieAppAddr, data=None, headers=GET_HEADERS)
+    response = requests.post(AppAnnieAppAddr%(CATEGORY_TOOLS), data=None, headers=GET_HEADERS)
     result =  response.text
     print result
     return result
