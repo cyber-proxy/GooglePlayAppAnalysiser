@@ -22,7 +22,7 @@ password = 'Licheng@5*'
 sender = 'tsotumu@163.com'
 receiver='tsotumu@qq.com'
 # 收件人为多个收件人
-receiver = ['tsotumu@qq.com']#,"196835241@qq.com", "568935836@qq.com"]
+receiver = ['tsotumu@qq.com',"196835241@qq.com", "568935836@qq.com"]
 
 subject = '重要邮件：googleplay产品在线检测报告汇总'
 # 通过Header对象编码的文本，包含utf-8编码信息和Base64编码信息。以下中文名测试ok

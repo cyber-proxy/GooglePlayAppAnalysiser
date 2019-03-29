@@ -14,7 +14,6 @@ def task():
         app_list = FileUtil.getProductsContent()
     else:
         app_list = AppAnnieProcessor.getProductOnline()
-    login = False
     print "waiting vpn connected(20s)..."
     time.sleep(20)
     if(OnlineCheck.googleAccessable()):
@@ -25,9 +24,7 @@ def task():
                 print "%s 在线" % app
             else:
                 print "%s 已经下线！！！" % app
-                if(not login):
-                    Email.login()
-                    login = True
+                Email.login()
                 time.sleep(5)
                 Email.send(app, ret[Common.RET_CONTENT])
     else:
