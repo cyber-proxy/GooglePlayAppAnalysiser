@@ -1,8 +1,14 @@
-# -*- coding: UTF-8 -*-
+# coding: utf-8
+# Create by LC
+import sys
 
-import string, os, sys, re, io, subprocess, urllib2, urllib, requests, json
-from selenium import webdriver
-import OnlineDetector
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+
+import string, os, sys, re,  urllib2, urllib, requests, json,time
+import time
+import OnlineCheck
 
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8') #改变标准输出的默认编码
 
@@ -18,7 +24,7 @@ categoryList = [CATEGORY_TOOLS, CATEGORY_APPLICATIONS]
 '''地址'''
 AppAnnieSite = "https://www.appannie.com/apps/google-play/top-chart/?country=US&category=11&device=&date=2019-03-27&feed=Free&rank_sorting_type=rank&page_number=0&page_size=100&table_selections=&metrics=grossing_rank,new_free_rank,category,all_avg,all_count,first_release_date,last_updated_date,est_download,est_revenue,dau&order_type=desc&order_by=free_rank"
 # "https://www.appannie.com/apps/google-play/top-chart/?country=US&category=11&device=&date=2019-03-27&feed=All&rank_sorting_type=rank&page_number=0&page_sie=500"
-AppAnnieAppAddr = "https://www.appannie.com/ajax/top-chart/table/?market=google-play&country_code=US&category=%s&date=2019-03-28&rank_sorting_type=rank&page_size=500&order_type=desc"
+AppAnnieAppAddr = "https://www.appannie.com/ajax/top-chart/table/?market=google-play&country_code=US&category=%s&date=%s&rank_sorting_type=rank&page_size=500&order_type=desc"
 
 '''POST请求头'''
 POST_HEADERS = {
@@ -47,7 +53,7 @@ POST_HEADERS = {
 GET_HEADERS = {
     'authority': 'www.appannie.com',
     'method': 'GET',
-    'path': '/ajax/top-chart/table/?market=google-play&country_code=US&category=11&date=2019-03-28&rank_sorting_type=rank&page_size=100&order_type=desc',
+    'path': '/ajax/top-chart/table/?market=google-play&country_code=US&category=%s&date=%s&rank_sorting_type=rank&page_size=500&order_type=desc',
     'scheme': 'https',
     'accept': 'application/json, text/plain, */*',
     'accept-encoding': 'gzip, deflate, br',
@@ -98,7 +104,10 @@ def login():
 '''请求并解析给定类别的所有app'''
 def getAppsAddres():
     print "getApps..."
-    response = requests.post(AppAnnieAppAddr%(CATEGORY_TOOLS), data=None, headers=GET_HEADERS)
+    timeStamp = "2019-03-28"#time.strftime("%Y-%m-%d", time.localtime())
+    path = AppAnnieAppAddr%(CATEGORY_TOOLS,timeStamp)
+    GET_HEADERS["path"] = path
+    response = requests.post(AppAnnieAppAddr%(CATEGORY_TOOLS,timeStamp), data=None, headers=GET_HEADERS)
     result =  response.text
     print result
     return result
@@ -125,9 +134,9 @@ def getAppDetail(product):
     # print (resp.read()).decode('utf-8')
 
 
-def selumium():
-    driver = webdriver.Chrome()
-    print ""
+# def selumium():
+#     driver = webdriver.Chrome()
+#     print ""
 
 def save(content):
     print "saving..."
@@ -136,6 +145,14 @@ def save(content):
     file.writelines(saveStr)
     file.close()
     print "saved"
+
+def getProductOnline():
+    result = getAppsAddres()
+    return parseApp(result)
+
+'''返回产品包名列表'''
+def getProductList():
+    print "getting product list..."
 
 '''main'''
 if __name__ == '__main__':

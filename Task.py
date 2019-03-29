@@ -3,23 +3,35 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 import time
-import AppAnieParse, EmailSender, OnlineDetector
+import AppAnnieProcessor, Email, OnlineCheck,Common,FileUtil
 
 '''周期性检测任务'''
 def task():
     print "do taks..."
-    content = AppAnieParse.getAppsAddres()
-    appList = AppAnieParse.parseApp(content)
-    for app in appList:
-        print "check %s..." % app
-        online = OnlineDetector.checkProduct(app)
-        if (online):
-            print "%s 在线" % app
-        else:
-            print "%s 已经下线！！！" % app
-            EmailSender.login()
-            time.sleep(3)
-            EmailSender.send(app)
+    app_list = []
+    if((not FileUtil.todayUpdated()) or not FileUtil.updateEnable()):
+        print "get product from file..."
+        app_list = FileUtil.getProductsContent()
+    else:
+        app_list = AppAnnieProcessor.getProductOnline()
+    login = False
+    print "waiting vpn connected(20s)..."
+    time.sleep(20)
+    if(OnlineCheck.googleAccessable()):
+        for app in app_list:
+            print "check %s..." % app
+            ret = OnlineCheck.checkProduct(app)
+            if (ret[Common.RET_VAL]):
+                print "%s 在线" % app
+            else:
+                print "%s 已经下线！！！" % app
+                if(not login):
+                    Email.login()
+                    login = True
+                time.sleep(5)
+                Email.send(app, ret[Common.RET_CONTENT])
+    else:
+        print "不能翻墙，请稍后再试。"
 
 
 if __name__ == '__main__':

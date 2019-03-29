@@ -1,4 +1,10 @@
 # coding: utf-8
+# Create by LC
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -39,10 +45,10 @@ msg['Date']='2019-3-28'
 
 
 '''构造邮件内容'''
-def emailContent(product):
+def emailContent(product, extraMsg):
     print ""
     # 构造文字内容
-    text = "邮件发送自定时检测任务:\n\t%s已经下线！！！\n\n\t回复无效。" % product
+    text = "邮件发送自定时检测任务:\n\t%s未能检测到在线！\nExtra msg:\n%s\n\n\tDon't Reply" % (product, extraMsg)
     text_plain = MIMEText(text, 'plain', 'utf-8')
     msg.attach(text_plain)
 
@@ -57,9 +63,9 @@ def login():
     smtp.login(username, password)
 
 '''发送邮件'''
-def send(product):
+def send(product, extraMsg):
     print "send..."
-    emailContent(product)
+    emailContent(product, extraMsg)
     smtp.sendmail(sender, receiver, msg.as_string())
     smtp.quit()
 
