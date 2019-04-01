@@ -1,14 +1,13 @@
-# coding: utf-8
+# coding=utf-8
 # Create by LC
-import sys
+import sys, time
 
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-import string, os, sys, re,  urllib2, urllib, requests, json,time
-import time
-import OnlineCheck
+import re,  urllib2, requests,json
+from util import FileUtil, Email
 
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8') #改变标准输出的默认编码
 
@@ -19,7 +18,6 @@ MAXPAGE = 500
 CATEGORY_APPLICATIONS = 11
 CATEGORY_TOOLS = 33
 categoryList = [CATEGORY_TOOLS, CATEGORY_APPLICATIONS]
-
 
 '''地址'''
 AppAnnieSite = "https://www.appannie.com/apps/google-play/top-chart/?country=US&category=11&device=&date=2019-03-27&feed=Free&rank_sorting_type=rank&page_number=0&page_size=100&table_selections=&metrics=grossing_rank,new_free_rank,category,all_avg,all_count,first_release_date,last_updated_date,est_download,est_revenue,dau&order_type=desc&order_by=free_rank"
@@ -53,14 +51,14 @@ POST_HEADERS = {
 GET_HEADERS = {
     'authority': 'www.appannie.com',
     'method': 'GET',
-    'path': '/ajax/top-chart/table/?market=google-play&country_code=US&category=%s&date=%s&rank_sorting_type=rank&page_size=500&order_type=desc',
+    'path': '/ajax/top-chart/table/?market=google-play&country_code=US&category=17&date=2019-03-30&rank_sorting_type=rank&page_size=500&order_type=desc',
     'scheme': 'https',
     'accept': 'application/json, text/plain, */*',
     'accept-encoding': 'gzip, deflate, br',
     'accept-language': 'en-US,en;q=0.9,es-ES;q=0.8,es;q=0.7,tr-TR;q=0.6,tr;q=0.5,pt-BR;q=0.4,pt;q=0.3,bez-TZ;q=0.2,bez;q=0.1,fr-FR;q=0.1,fr;q=0.1,de-BE;q=0.1,de;q=0.1,ug-CN;q=0.1,ug;q=0.1,ar-JO;q=0.1,ar;q=0.1,ja-JP;q=0.1,ja;q=0.1,as-IN;q=0.1,as;q=0.1,zh-CN;q=0.1,zh;q=0.1,ko-KR;q=0.1,ko;q=0.1,yo-NG;q=0.1,yo;q=0.1,sr-RS;q=0.1,sr;q=0.1,luo-KE;q=0.1,luo;q=0.1,en-XA;q=0.1,az-AZ;q=0.1,az;q=0.1,bm-ML;q=0.1,bm;q=0.1,yue-HK;q=0.1,yue;q=0.1,id-ID;q=0.1,id;q=0.1,fr-CA;q=0.1',
-    'cookie': 'optimizelyEndUserId=oeu1553692578700r0.6751054685689206; csrftoken=OkjUyLjK9dmK5boFO5ZXdvoibZSmVAPc; aa_language=cn; _gcl_au=1.1.1312902289.1553692597; _ga=GA1.2.71132698.1553692597; _gid=GA1.2.313966484.1553692597; _mkto_trk=id:071-QED-284&token:_mch-appannie.com-1553692597540-52664; rid=dac906e0b3e441849bb86c708b49ed3a; __adroll_fpc=d1ce82e55cb17caddf3e11cd2060944f-1553693503622; __ar_v4=%7C4IJGT2ZDGJFZLAACNH4TVF%3A20190326%3A1%7CPSAAGT4MFBB2ROIM33X7L2%3A20190326%3A1%7CHIOYWRB44ZGAPB3KUNXVWY%3A20190326%3A1; django_language=zh-cn; _hp2_ses_props.3646280627=%7B%22ts%22%3A1553762194519%2C%22d%22%3A%22www.appannie.com%22%2C%22h%22%3A%22%2Faccount%2Flogin%2F%22%7D; sessionId=".eJxNjb1KA0EURtdN1LASNNYWghbaLEv-zLam0mATvGA33J25JkPW2Z97JxJBsBICPocv5kPYSiCK3eGDc7638LXauYAOE7MtXEk1WxZysob2dlMsWMskgFaObuZxRg9hEATaQVuhl7nyTLWy5vbzoxPA4a9FDrOczCSEJrI1cIo4SnoGe1fdIfa7_UFK6fAxS7VOcGRGOIADKVj50qCQqcI1HP_LZ6gX5Awkz5Shw3wlVnOMWhfeSTxGphvH5NiKXdJdYSi_3hpHmFMtSs9JL5TYJ9Kbgw1Ef1A1INr_apy0zs-ib6vLlbxECu7HUdW8nFa779Nqz8c_VH5oIQ:1h9QWa:tfqELJlFFHtegMn7gyri4xmTJbc"; aa_user_token=".eJxrYKotZNQI5SxNLqmIz0gszihkClVIMjSxMLZINE6zSDFLNDVLS0w0NjMxSrVMTktLNTZKTQ0Vik8sLcmILy1OLYpPSkzOTs1LKWQONShPTUrMS8ypLMlMLtZLTE7OL80r0XNOLE71zCtOzSvOLMksS_XNT0nNcYLqYQnlRTIpM6WQ1WtZjyBDqR4A_qY0hA:1h9QWa:WxW7oafIgCU3TAn3XIb0IElu-fc"; _hp2_id.3646280627=%7B%22userId%22%3A%227479114902357474%22%2C%22pageviewId%22%3A%228538662909575042%22%2C%22sessionId%22%3A%221677018695643557%22%2C%22identity%22%3A%221150118%22%2C%22trackerVersion%22%3A%224.0%22%2C%22identityField%22%3Anull%2C%22isIdentified%22%3A1%7D',
+    'cookie': 'optimizelyEndUserId=oeu1553692578700r0.6751054685689206; csrftoken=OkjUyLjK9dmK5boFO5ZXdvoibZSmVAPc; aa_language=cn; _gcl_au=1.1.1312902289.1553692597; _ga=GA1.2.71132698.1553692597; _mkto_trk=id:071-QED-284&token:_mch-appannie.com-1553692597540-52664; rid=dac906e0b3e441849bb86c708b49ed3a; __adroll_fpc=d1ce82e55cb17caddf3e11cd2060944f-1553693503622; __ar_v4=%7C4IJGT2ZDGJFZLAACNH4TVF%3A20190326%3A1%7CPSAAGT4MFBB2ROIM33X7L2%3A20190326%3A1%7CHIOYWRB44ZGAPB3KUNXVWY%3A20190326%3A1; django_language=zh-cn; _gid=GA1.2.511860413.1554082378; _hp2_ses_props.3646280627=%7B%22r%22%3A%22https%3A%2F%2Fwww.appannie.com%2Fapps%2Fgoogle-play%2Ftop-chart%2F%3Fcountry%3DUS%26category%3D11%26device%3D%26date%3D2019-03-30%26feed%3DAll%26rank_sorting_type%3Drank%26page_number%3D0%26page_size%3D100%26table_selections%3D%22%2C%22ts%22%3A1554088909862%2C%22d%22%3A%22www.appannie.com%22%2C%22h%22%3A%22%2Fapps%2Fgoogle-play%2Ftop-chart%2F%22%7D; sessionId=".eJxNjc1Kw0AURtM0thIpWp_Apd2E0D-Trd2oxU1xwN1wM3Nth8ZJJveOUkFwJRTEx_DFfBEpVHF3-OCc7y18da1z0SckMpWtsSFDjJa3orffJDE0PA_EYQl26WGJ92EQBMqKngTPK-kJG2n0zddHPxDHvxZaKErU81BEQEaLM4AsHWkYXQynMB6OJznm04ciVyqFTGcwEUdckfS1Bkbtwq04_ZcvQK3RapE-YwEWyg0bRQkoVXnLyQwIry2hJcPmCW8rjeXl3jiBEhuWaoVqLdk8otod7CD-A9cWcfc7arUHne7nlao3_BJLcTeLXTRYuIP3hev45AdAuGdd:1hAnoo:LMbXjVDNCv0hPkqrkSUGh4mIwpM"; _gat_UA-2339266-6=1; _hp2_id.3646280627=%7B%22userId%22%3A%227479114902357474%22%2C%22pageviewId%22%3A%225923988246413354%22%2C%22sessionId%22%3A%225048843942078597%22%2C%22identity%22%3A%221150118%22%2C%22trackerVersion%22%3A%224.0%22%2C%22identityField%22%3Anull%2C%22isIdentified%22%3A1%7D; aa_user_token=".eJxrYKotZNQI5SxNLqmIz0gszihkClVIMjSxMLZINE6zSDFLNDVLS0w0NjMxSrVMTktLNTZKTQ0Vik8sLcmILy1OLYpPSkzOTs1LKWQONShPTUrMS8ypLMlMLtZLTE7OL80r0XNOLE71zCtOzSvOLMksS_XNT0nNcYLqYQnlRTIpM6WQ1WtZjyBDqR4A_qY0hA:1hAnp5:tC9kAa-vQ7OVhjxDBwdd6zGSqCs"',
     'dnt': '1',
-    'referer': 'https://www.appannie.com/apps/google-play/top-chart/?country=US&category=11&device=&date=2019-03-28&feed=All&rank_sorting_type=rank&page_number=0&page_size=100&table_selections=',
+    'referer': 'https://www.appannie.com/apps/google-play/top-chart/?country=US&category=17&device=&date=2019-03-30&feed=All&rank_sorting_type=rank&page_number=0&page_size=100&table_selections=',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
     'x-csrftoken': 'OkjUyLjK9dmK5boFO5ZXdvoibZSmVAPc',
     'x-newrelic-id': 'VwcPUFJXGwEBUlJSDgc=',
@@ -102,21 +100,45 @@ def login():
 
 
 '''请求并解析给定类别的所有app'''
-def getAppsAddres():
+def getAppsAddres(category):
     print "getApps..."
-    timeStamp = "2019-03-28"#time.strftime("%Y-%m-%d", time.localtime())
-    path = AppAnnieAppAddr%(CATEGORY_TOOLS,timeStamp)
+    timeStamp = "2019-03-30"#time.strftime("%Y-%m-%d", time.localtime())
+    path = AppAnnieAppAddr%(category,timeStamp)
     GET_HEADERS["path"] = path
-    response = requests.post(AppAnnieAppAddr%(CATEGORY_TOOLS,timeStamp), data=None, headers=GET_HEADERS)
+    response = requests.get(AppAnnieAppAddr%(category,timeStamp), data=None, headers=GET_HEADERS)
     result =  response.text
-    print result
-    return result
+    # print result
+    resultJson = json.loads(result)
+    rowsList = resultJson["table"]['rows']
+    # print "result->" + result
+    print "code->" + str(response.status_code)
+    return rowsList
 
-'''解析出app列表'''
-def parseApp(strContent):
+'''解析出免费的app排名'''
+def parseToRankMap(rows_ist):
     print "parse..."
-    # "url": "/apps/google-play/app/com.tencent.ig/details/"
-    return re.findall(r"/apps/google-play/app/(.+?)/details/", strContent)
+    appRankMap = {}
+    pkgCount = 0
+    for row in  rows_ist:
+        print "url->%s"%row
+        try:
+            rank = row[0]
+            free_app_info =  row[1][0]
+            url =  free_app_info['url']
+            if(pkgCount > 200):
+                break
+            # "url": "/apps/google-play/app/com.tencent.ig/details/"
+            app = re.findall(r"/apps/google-play/app/(.+?)/details/", url)
+            if(app):
+                pkgCount = pkgCount + 1
+                appRankMap[app[0]] = rank
+                print str(appRankMap)
+            else:
+                continue
+        except Exception:
+            print str(Exception)
+            continue
+    return appRankMap
 
 '''解析app类别'''
 
@@ -133,35 +155,37 @@ def getAppDetail(product):
     # resp = urllib2.urlopen(req)
     # print (resp.read()).decode('utf-8')
 
-
-# def selumium():
-#     driver = webdriver.Chrome()
-#     print ""
-
-def save(content):
-    print "saving..."
-    file = open("C:\Users\Administrator\PycharmProjects\AppDetectorScheduleTask\products",'w')
-    saveStr = "\n".join(str(app) for app in  content)
-    file.writelines(saveStr)
-    file.close()
-    print "saved"
-
 def getProductOnline():
     result = getAppsAddres()
-    return parseApp(result)
+    return parseToRankMap(result)
 
 '''返回产品包名列表'''
 def getProductList():
     print "getting product list..."
+    dumpAppFromNet()
+
+'''获取免费的应用类别里面所有app及其排名'''
+def dumpAppFromNet():
+    Email.sendContent("获取免费的应用类别里面所有app及其排名,开始执行（每2天执行一次）。")
+    categoryMap = FileUtil.getJsonObject(FileUtil.CATEGORY_FILE)
+    categoryList = categoryMap.values()
+    print "category: " + str(categoryList)
+    for category in categoryList:
+        print "read category->%s" % category
+        result = getAppsAddres(category)
+        appRankMap = parseToRankMap(result)
+        print str(appRankMap)
+        FileUtil.saveProduct(category, appRankMap)
+        print "wait 5s..."
+        time.sleep(5)
+    Email.sendContent("获取免费的应用类别里面所有app及其排名，完成执行。")
 
 '''main'''
 if __name__ == '__main__':
     print "main"
+    dumpAppFromNet()
     # login()
     # AppAniueScan()
-    result = getAppsAddres()
-    appList = parseApp(result)
-    save(appList)
     # for app in appList:
     #     print "check %s ..."%app
     #     if(OnlineDetector.checkProduct(app)):

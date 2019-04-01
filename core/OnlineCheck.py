@@ -5,18 +5,12 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-
-import os
-import string
-import os,sys,re
-import subprocess
-import urllib2,urllib,json,requests
+import json,requests
 import socket
-from threading import Timer
-import Email,Common
+from util import Email, Common
 
 '''设置网络延时'''
-socket.setdefaulttimeout(100.0)
+socket.setdefaulttimeout(20.0)
 
 products = ["com.lm.powersecurity"]
 URL = "https://play.google.com/store/apps/details?id="
@@ -38,11 +32,14 @@ def timeHandler(handle):
 def http_validate(target_url):
     print "check vpn..."
     try:
-       status_code = requests.get(target_url).status_code
-       print "status code->%s"%status_code
-       if (status_code == 200):
-           return True
-       else:
+        # requests.adapters.DEFAULT_RETRIES = 5
+        # s = requests.sessions()
+        # s.keep_alive = False
+        status_code = requests.get(target_url, timeout=30).status_code
+        print "status code->%s"%status_code
+        if (status_code == 200):
+            return True
+        else:
            return False
     except Exception, e:
         print str(Exception) + "\n" + str(e)
@@ -54,20 +51,16 @@ def checkProduct(product):
     try:
         addr = ('%s%s' % (URL, product))
         print "request->" +addr
-        status_code = requests.get(addr).status_code
+        # requests.adapters.DEFAULT_RETRIES = 5
+        # s = requests.sessions()
+        # s.keep_alive = False
+        status_code = requests.get(addr, timeout=20).status_code
         print "status code->%s"%status_code
         if(status_code == 200):
             ret[Common.RET_VAL] = True
         else:
-            ret[Common.RET_CONTENT] = "status_code=%s"%status_code
+            ret[Common.RET_CONTENT] = "status_code:%s" % (status_code)
             ret[Common.RET_VAL] = False
-
-        # req = urllib2.Request(addr)
-        # res = urllib2.urlopen(req)
-        # t = Timer(20.0, timeHandler, [res])
-        # t.start()
-        # res = res.read()
-        # print(res)
         return ret
     except Exception, e:
         ret[Common.RET_VAL] = False
@@ -92,6 +85,6 @@ if __name__ == '__main__':
             else:
                 print "产品下线"
                 Email.login()
-                Email.send(product, ret[Common.RET_CONTENT])
+                Email.sendTaskResult(product + "\n" + ret[Common.RET_CONTENT])
     else:
         print "翻墙失效"
