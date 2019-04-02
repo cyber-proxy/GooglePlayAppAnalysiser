@@ -82,7 +82,7 @@ def sendTaskStart():
     try:
         login()
         time.sleep(2)
-        text = "（邮件发送自定时检测任务）\n在线检测开始执行，1h左右会收到邮件通知检测结果\n\n\n\tDon't Reply."
+        text = "（邮件发送自定时检测任务）\n在线检测开始执行，2h左右会收到邮件通知检测结果\n\n\n\tDon't Reply."
         emailContent(text)
         smtp.sendmail(sender, receiver, msg.as_string())
         smtp.quit()
