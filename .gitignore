@@ -1,0 +1,5 @@
+/venv
+/util/*.pyc
+/build
+/.idea
+/core/*.pyc

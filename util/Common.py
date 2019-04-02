@@ -5,8 +5,9 @@ import sys,time,datetime,json
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-RET_VAL = "ret_val"
-RET_CONTENT = "ret_content"
+RET_BOOL_VAL = "ret_bool_val"
+RET_EXCEPT = "ret_except"
+RET_CODE = "status_code"
 
 def getTimeStr():
     return time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))

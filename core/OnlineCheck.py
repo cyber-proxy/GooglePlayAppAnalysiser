@@ -47,24 +47,21 @@ def http_validate(target_url):
 
 '''查看产品页面是否存在'''
 def checkProduct(product):
-    ret = {Common.RET_VAL: False, Common.RET_CONTENT: "none"}
+    ret = {Common.RET_BOOL_VAL: False, Common.RET_EXCEPT: "none", Common.RET_CODE:-1}
     try:
         addr = ('%s%s' % (URL, product))
         print "request->" +addr
-        # requests.adapters.DEFAULT_RETRIES = 5
-        # s = requests.sessions()
-        # s.keep_alive = False
-        status_code = requests.get(addr, timeout=20).status_code
+        status_code = requests.head(addr, timeout=20).status_code
         print "status code->%s"%status_code
         if(status_code == 200):
-            ret[Common.RET_VAL] = True
+            ret[Common.RET_BOOL_VAL] = True
         else:
-            ret[Common.RET_CONTENT] = "status_code:%s" % (status_code)
-            ret[Common.RET_VAL] = False
+            ret[Common.RET_CODE] = "status_code:%s" % (status_code)
+            ret[Common.RET_BOOL_VAL] = False
         return ret
     except Exception, e:
-        ret[Common.RET_VAL] = False
-        ret[Common.RET_CONTENT] = str(Exception) + "\n" + str(e)
+        ret[Common.RET_BOOL_VAL] = False
+        ret[Common.RET_EXCEPT] = str(Exception) + "\n" + str(e)
         print str(Exception)
         print str(e)
         return ret
@@ -75,16 +72,16 @@ def googleAccessable():
 
 """main"""
 if __name__ == '__main__':
-    productMap = readJson("C:\Users\Administrator\PycharmProjects\AppDetectorScheduleTask\product.json")
+    productMap = readJson("C:\\Users\Administrator\\PycharmProjects\\AppDetectorScheduleTask\\json\product\\20190330181834.json")
     if(googleAccessable()):
         print "翻墙有效"
-        for product in productMap.values():
+        for product in productMap:
             ret = checkProduct(product)
-            if(ret[Common.RET_VAL]):
+            if(ret[Common.RET_BOOL_VAL]):
                 print "产品在线"
             else:
                 print "产品下线"
-                Email.login()
-                Email.sendTaskResult(product + "\n" + ret[Common.RET_CONTENT])
+                # Email.login()
+                # Email.sendTaskResult(product + "\n" + ret[Common.RET_CONTENT])
     else:
         print "翻墙失效"

@@ -24,7 +24,8 @@ def task():
     all_product_maps = {}
     count = 0
     Email.sendTaskStart()
-    offline_map = {}
+    offline_map_email = {}
+    offline_map_log = {}
     if((not FileUtil.todayUpdated()) and FileUtil.updateEnable()):
         print "get product from file..."
         AppAnnieProcessor.dumpAppFromNet()
@@ -42,16 +43,17 @@ def task():
                 print "wait 1 seconds..."
                 time.sleep(1)
                 ret = OnlineCheck.checkProduct(product_pkg)
-                if (ret[Common.RET_VAL]):
+                if (ret[Common.RET_BOOL_VAL]):
                     print "%s online" % product_pkg
                 else:
                     print "%s offline！！！" % product_pkg
-                    msg = "ranking->" + str(product_map_for_kind[product_pkg]) + " reason->" + ret[Common.RET_CONTENT] + " category->" + FileUtil.getCategoryName(productMapKind)
-                    print msg
-                    offline_map[product_pkg] = msg
+                    email_msg = "rank->" + str(product_map_for_kind[product_pkg]) + "\tcategory->" + FileUtil.getCategoryName(productMapKind)
+                    log_msg = "rank->" + str(product_map_for_kind[product_pkg]) + " reason->" + ret[Common.RET_EXCEPT] + " code->" + ret[Common.RET_CODE] + " category->" + FileUtil.getCategoryName(productMapKind)
+                    offline_map_email[product_pkg] = email_msg
+                    offline_map_log[product_pkg] = log_msg
         print "check done."
-        Email.loginAndSend(offline_map)
-        FileUtil.saveLog(offline_map)
+        Email.loginAndSend(offline_map_email)
+        FileUtil.saveLog(offline_map_log)
         FileUtil.updateEnable()
     else:
         print "不能翻墙，请稍后再试。"
