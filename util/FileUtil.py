@@ -70,11 +70,12 @@ def saveLog(contentMap):
 '''
 def getAllKindProductMaps():
     productMaps = {}
-    pathdir = PRODUCT_DICT_PATH % Common.getTimeDayStr()
+    pathdir = PRODUCT_DICT_PATH % "20190401"#Common.getTimeDayStr()
     if os.path.exists(pathdir):
         files = os.listdir(pathdir)
         for productFile in files:
             file = open(os.path.join(pathdir,productFile), 'r')
+            # print productFile + " ----" + productFile.split('.')[0]
             productMaps[productFile.split('.')[0]] = json.load(file)
     print str(productMaps)
     return productMaps
@@ -101,8 +102,9 @@ def getCategoryName(cagegory_code):
     print "read category->%s"%cagegory_code
     category_map = json.load(open(CATEGORY_FILE, "r"));
     for item in  category_map.items():
-        if(item[1] == cagegory_code):
-            return item[0]
+        if(str(item[1]) == str(cagegory_code)):
+            print "get->" + item[0]
+            return str(item[0])
     return "No Category"
 
 if __name__ == '__main__':

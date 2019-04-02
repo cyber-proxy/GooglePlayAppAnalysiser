@@ -35,10 +35,8 @@ def task():
         for productMapKind in all_product_maps:
             product_map_for_kind = all_product_maps[productMapKind];
             count = count + 1
-            if(count > 10):
-                break
-            print "count->" + str(count)
-            print "check %s..." % str(product_map_for_kind)
+            # print "count->" + str(count) + " " + productMapKind
+            # print "check %s..." % str(product_map_for_kind)
             for product_pkg in product_map_for_kind:
                 print "check pkg->%s..." % product_pkg
                 ret = OnlineCheck.checkProduct(product_pkg)
@@ -46,9 +44,11 @@ def task():
                     print "%s online" % product_pkg
                 else:
                     print "%s offline！！！" % product_pkg
-                    offline_map[product_pkg] = "ranking->" + str(product_map_for_kind[product_pkg]) + " reason->" + ret[Common.RET_CONTENT] + " category->" + FileUtil.getCategoryName(productMapKind)
+                    msg = "ranking->" + str(product_map_for_kind[product_pkg]) + " reason->" + ret[Common.RET_CONTENT] + " category->" + FileUtil.getCategoryName(productMapKind)
+                    print msg
+                    offline_map[product_pkg] = msg
         print "check done."
-        Email.loginAndSend(str(offline_map))
+        Email.loginAndSend(offline_map)
         FileUtil.saveLog(offline_map)
         FileUtil.updateEnable()
     else:

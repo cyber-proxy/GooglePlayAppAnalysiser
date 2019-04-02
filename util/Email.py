@@ -12,7 +12,7 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.header import Header
 import threading
-import time
+import time,json
 
 '''
     设置smtplib所需的参数
@@ -21,7 +21,7 @@ smtpserver = "smtp.exmail.qq.com"#'smtp.163.com'
 username = "fushikang@security4defender.club"#'tsotumu@163.com'
 password = "PS2.com"#'Licheng@5*'
 sender = 'fushikang@security4defender.club'
-receiver = ['tsotumu@qq.com']#, '196835241@qq.com', '568935836@qq.com']
+receiver = ['tsotumu@qq.com', '196835241@qq.com', '568935836@qq.com']
 subject = '重要邮件：googleplay产品在线检测报告汇总'
 # 通过Header对象编码的文本，包含utf-8编码信息和Base64编码信息。以下中文名测试ok
 # subject = '中文标题'
@@ -54,7 +54,7 @@ def login():
 '''发送邮件'''
 def sendTaskResult(productMsg):
     print "send..."
-    print productMsg
+    print unicode(productMsg, encoding="utf-8")
     try:
         text = "（邮件发送自定时检测任务）\n未能检测到在线的信息如下：\n\n%s\n\n\tDon't Reply." % (productMsg)
         emailContent(text)
@@ -66,6 +66,7 @@ def sendTaskResult(productMsg):
 '''登陆和发送'''
 def loginAndSend(content):
     print "login and send"
+    content = str(json.dumps(content, encoding="UTF-8", ensure_ascii=False))
     print content
     try:
         login()
@@ -79,6 +80,8 @@ def loginAndSend(content):
 def sendTaskStart():
     print "sendTaskStart"
     try:
+        login()
+        time.sleep(2)
         text = "（邮件发送自定时检测任务）\n在线检测开始执行，1h左右会收到邮件通知检测结果\n\n\n\tDon't Reply."
         emailContent(text)
         smtp.sendmail(sender, receiver, msg.as_string())
@@ -91,6 +94,8 @@ def sendTaskStart():
 def sendContent(content):
     print "sendTaskStart"
     try:
+        login()
+        time.sleep(2)
         text = "（邮件发送自定时检测任务）\n%s\n\n\n\tDon't Reply."%content
         emailContent(text)
         smtp.sendmail(sender, receiver, msg.as_string())

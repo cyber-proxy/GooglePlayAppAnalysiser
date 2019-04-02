@@ -1,6 +1,6 @@
 # coding: utf-8
 # Create by LC
-import sys,time,datetime
+import sys,time,datetime,json
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -19,8 +19,8 @@ if __name__ == '__main__':
     aMap = {"asdf":1, "asdfasdf":False, "asdfasdfaxx":True, "x":"yyyy"}
     aMap["aas"] ="xxxx"
     aMap["aasa"] = "xxxx"
-    aMap["aasv"] = "xxxx"
+    aMap["aasv"] = "今天"
     aMap ["com.aaa"] = "z"
-    print aMap
+    print json.dumps(aMap, encoding='UTF-8', ensure_ascii=False)
     trtime= time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
     print trtime
