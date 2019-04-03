@@ -41,7 +41,7 @@ def task():
             for product_pkg in product_map_for_kind:
                 # print "check pkg->%s..." % product_pkg
                 print "wait 1 seconds..."
-                time.sleep(1)
+                # time.sleep(1)
                 ret = OnlineCheck.checkProduct(product_pkg)
                 if (ret[Common.RET_BOOL_VAL]):
                     print "%s online" % product_pkg
