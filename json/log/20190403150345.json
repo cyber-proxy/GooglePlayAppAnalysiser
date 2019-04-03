@@ -1,0 +1,34 @@
+{
+  "application": [
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "name",
+      "rank": "40",
+      "pkg": "com.bamnxetworks.mobile.android.gameday.atbat"
+    },
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "name",
+      "rank": "4",
+      "pkg": "com.snapxchat.android"
+    },
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "name",
+      "rank": "152",
+      "pkg": "com.geicxo.mobile"
+    }
+  ]
+}

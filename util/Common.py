@@ -21,7 +21,9 @@ if __name__ == '__main__':
     aMap["aas"] ="xxxx"
     aMap["aasa"] = "xxxx"
     aMap["aasv"] = "今天"
-    aMap ["com.aaa"] = "z"
+    aMap ["com.aaa"] = [{"asdf":1}, {"234":2}]
     print json.dumps(aMap, encoding='UTF-8', ensure_ascii=False)
     trtime= time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
     print trtime
+    if not aMap.get('a'):
+        print "zaa"

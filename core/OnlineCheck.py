@@ -56,7 +56,7 @@ def checkProduct(product):
         if(status_code == 200):
             ret[Common.RET_BOOL_VAL] = True
         else:
-            ret[Common.RET_CODE] = "status_code:%s" % (status_code)
+            ret[Common.RET_CODE] = str(status_code)
             ret[Common.RET_BOOL_VAL] = False
         return ret
     except Exception, e:

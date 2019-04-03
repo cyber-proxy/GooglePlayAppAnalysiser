@@ -31,7 +31,7 @@ def task():
         AppAnnieProcessor.dumpAppFromNet()
     all_product_maps = FileUtil.getAllKindProductMaps()
     print "waiting vpn connected(20s)..."
-    time.sleep(20)
+    # time.sleep(20)
     if(OnlineCheck.googleAccessable()):
         for productMapKind in all_product_maps:
             product_map_for_kind = all_product_maps[productMapKind];
@@ -47,10 +47,23 @@ def task():
                     print "%s online" % product_pkg
                 else:
                     print "%s offline！！！" % product_pkg
-                    email_msg = "rank->" + str(product_map_for_kind[product_pkg]) + "\tcategory->" + FileUtil.getCategoryName(productMapKind)
-                    log_msg = "rank->" + str(product_map_for_kind[product_pkg]) + " reason->" + ret[Common.RET_EXCEPT] + " code->" + ret[Common.RET_CODE] + " category->" + FileUtil.getCategoryName(productMapKind)
-                    offline_map_email[product_pkg] = email_msg
-                    offline_map_log[product_pkg] = log_msg
+                    category = FileUtil.getCategoryName(productMapKind)
+                    ran_name = str(product_map_for_kind[product_pkg]).split(',')
+                    rank = ran_name[0]
+                    name = ran_name[1]
+                    # local log content
+                    category_list = offline_map_log.get(category)
+                    if not category_list:
+                        category_list = []
+                        offline_map_log[category] = category_list
+                    offline_map_log[category].append({"name": "name", "pkg": product_pkg, "rank": rank, " ret":ret})
+                    # Email content
+                    if ret[Common.RET_CODE] == str(404):
+                        category_list = offline_map_email.get(category)
+                        if not category_list:
+                            category_list = []
+                            offline_map_email[category] = category_list
+                        offline_map_email[category].append({"name":"name", "pkg":product_pkg, "rank":rank})
         print "check done."
         Email.loginAndSend(offline_map_email)
         FileUtil.saveLog(offline_map_log)

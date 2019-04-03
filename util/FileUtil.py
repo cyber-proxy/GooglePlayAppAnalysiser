@@ -70,13 +70,14 @@ def saveLog(contentMap):
 '''
 def getAllKindProductMaps():
     productMaps = {}
-    pathdir = PRODUCT_DICT_PATH % "20190401"#Common.getTimeDayStr()
+    pathdir = PRODUCT_DICT_PATH % "20190403"#Common.getTimeDayStr()
     if os.path.exists(pathdir):
         files = os.listdir(pathdir)
         for productFile in files:
             file = open(os.path.join(pathdir,productFile), 'r')
             # print productFile + " ----" + productFile.split('.')[0]
             productMaps[productFile.split('.')[0]] = json.load(file)
+            break # for test
     print str(productMaps)
     return productMaps
 

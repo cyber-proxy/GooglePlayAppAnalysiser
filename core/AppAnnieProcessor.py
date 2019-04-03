@@ -125,13 +125,15 @@ def parseToRankMap(rows_ist):
             rank = row[0]
             free_app_info =  row[1][0]
             url =  free_app_info['url']
+            app_name = free_app_info['name']
             if(pkgCount > 200):
                 break
             # "url": "/apps/google-play/app/com.tencent.ig/details/"
             app = re.findall(r"/apps/google-play/app/(.+?)/details/", url)
             if(app):
+                pkg_name = app[0]
                 pkgCount = pkgCount + 1
-                appRankMap[app[0]] = rank
+                appRankMap[pkg_name] = str(rank) + "," + app_name
                 print str(appRankMap)
             else:
                 continue

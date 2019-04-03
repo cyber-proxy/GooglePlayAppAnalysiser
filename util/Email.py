@@ -21,7 +21,7 @@ username = "fushikang@security4defender.club"  # 'tsotumu@163.com'
 password = "PS2.com"  # 'Licheng@5*'
 sender = 'fushikang@security4defender.club'
 receiver = ['tsotumu@qq.com']
-receiver = ['tsotumu@qq.com', '196835241@qq.com', '568935836@qq.com']
+# receiver = ['tsotumu@qq.com', '196835241@qq.com', '568935836@qq.com']
 subject = '重要邮件：googleplay产品在线检测报告汇总'
 # 通过Header对象编码的文本，包含utf-8编码信息和Base64编码信息。以下中文名测试ok
 # subject = '中文标题'
@@ -81,9 +81,12 @@ def loginAndSend(content_map):
     # content = str(contentMap)
     print str(content_map)
     content = ""
-    for key in content_map:
-        content = content + key + " : " + content_map[key] + "\n"
-    print content
+    for category in content_map:
+        content = content + "=====================%s=====================\n" % (category)
+        category_list = content_map[category]
+        for app_info in  category_list:
+            content = content + str(app_info) + "\n"
+    print str(content)
     try:
         login()
         time.sleep(2)
