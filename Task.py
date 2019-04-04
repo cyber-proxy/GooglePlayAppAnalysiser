@@ -13,8 +13,11 @@ from util import Email, FileUtil, Common
 
 
 '''
-    待添加的功能需求
+    功能需求
     1、输出的结果需要包含排名信息和包名。
+    2、定时执行。
+    3、自动拉取appanie信息。
+    4、检测前一天的下线信息。
 '''
 
 
@@ -31,7 +34,7 @@ def task():
         AppAnnieProcessor.dumpAppFromNet()
     all_product_maps = FileUtil.getAllKindProductMaps()
     print "waiting vpn connected(20s)..."
-    # time.sleep(20)
+    time.sleep(20)
     if(OnlineCheck.googleAccessable()):
         for productMapKind in all_product_maps:
             product_map_for_kind = all_product_maps[productMapKind];
@@ -40,8 +43,6 @@ def task():
             # print "check %s..." % str(product_map_for_kind)
             for product_pkg in product_map_for_kind:
                 # print "check pkg->%s..." % product_pkg
-                print "wait 1 seconds..."
-                # time.sleep(1)
                 ret = OnlineCheck.checkProduct(product_pkg)
                 if (ret[Common.RET_BOOL_VAL]):
                     print "%s online" % product_pkg
@@ -56,14 +57,14 @@ def task():
                     if not category_list:
                         category_list = []
                         offline_map_log[category] = category_list
-                    offline_map_log[category].append({"name": "name", "pkg": product_pkg, "rank": rank, " ret":ret})
+                    offline_map_log[category].append({"name": name, "pkg": product_pkg, "rank": rank, " ret":ret})
                     # Email content
                     if ret[Common.RET_CODE] == str(404):
                         category_list = offline_map_email.get(category)
                         if not category_list:
                             category_list = []
                             offline_map_email[category] = category_list
-                        offline_map_email[category].append({"name":"name", "pkg":product_pkg, "rank":rank})
+                        offline_map_email[category].append({"name":name, "pkg":product_pkg, "rank":rank})
         print "check done."
         Email.loginAndSend(offline_map_email)
         FileUtil.saveLog(offline_map_log)

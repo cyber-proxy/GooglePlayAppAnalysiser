@@ -61,7 +61,7 @@ def updateEnable():
 def saveLog(contentMap):
     print "save map..."
     logFile = open(CHECK_LOG + Common.getTimeStr() + ".json", 'w')
-    json.dump(contentMap, logFile)
+    json.dump(contentMap, logFile, encoding='UTF-8', ensure_ascii=False)
     logFile.close()
 
 '''
@@ -77,7 +77,7 @@ def getAllKindProductMaps():
             file = open(os.path.join(pathdir,productFile), 'r')
             # print productFile + " ----" + productFile.split('.')[0]
             productMaps[productFile.split('.')[0]] = json.load(file)
-            break # for test
+            # break # for test
     print str(productMaps)
     return productMaps
 

@@ -27,3 +27,7 @@ if __name__ == '__main__':
     print trtime
     if not aMap.get('a'):
         print "zaa"
+    list = [{"rank":"90", "name":"1"},{"rank":"2222"}, {"rank":"110"}]
+    print str(list)
+    sl = sorted(list, cmp= lambda x,y:cmp(int(x["rank"]), int(y["rank"])))
+    print str(sl)
