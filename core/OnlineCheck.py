@@ -51,6 +51,8 @@ def checkProduct(product):
     try:
         addr = ('%s%s' % (URL, product))
         print "request->" +addr
+        session = requests.session()
+        session.keep_alive = False
         status_code = requests.head(addr, timeout=20).status_code
         print "status code->%s"%status_code
         if(status_code == 200):

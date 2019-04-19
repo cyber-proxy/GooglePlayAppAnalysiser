@@ -21,9 +21,9 @@ def getYesterday_():
     yesterday=today-oneday
     return yesterday.strftime('%Y-%m-%d')
 
-def getYesterday():
+def getPre2day():
     today=datetime.date.today()
-    oneday=datetime.timedelta(days=1)
+    oneday=datetime.timedelta(days=2)
     yesterday=today-oneday
     return yesterday.strftime('%Y%m%d')
     # 输出
@@ -44,5 +44,5 @@ if __name__ == '__main__':
     # print str(list)
     # sl = sorted(list, cmp= lambda x,y:cmp(int(x["rank"]), int(y["rank"])))
     # print str(sl)
-    print getYesterday()
+    print getPre2day()
     print time.localtime(time.time())

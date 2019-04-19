@@ -169,7 +169,7 @@ def getProductList():
 
 '''获取免费的应用类别里面所有app及其排名'''
 def dumpAppFromNet():
-    # Email.sendContent("获取免费的应用类别里面所有app及其排名,开始执行（每2天执行一次）。")
+    Email.sendContent("获取免费的应用类别里面所有app及其排名,开始执行（每2天执行一次）。")
     categoryMap = FileUtil.getJsonObject(FileUtil.CATEGORY_FILE)
     categoryList = categoryMap.values()
     print "category: " + str(categoryList)
@@ -181,7 +181,7 @@ def dumpAppFromNet():
         FileUtil.saveProduct(category, appRankMap)
         print "wait 5s..."
         time.sleep(5)
-    # Email.sendContent("获取免费的应用类别里面所有app及其排名，完成执行。")
+    Email.sendContent("获取免费的应用类别里面所有app及其排名，完成执行。")
 
 '''main'''
 if __name__ == '__main__':

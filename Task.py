@@ -29,12 +29,12 @@ def task():
     Email.sendTaskStart()
     offline_map_email = {}
     offline_map_log = {}
-    if((not FileUtil.todayUpdated()) and FileUtil.updateEnable()):
-        print "get product from file..."
-        AppAnnieProcessor.dumpAppFromNet()
+    # if((not FileUtil.todayUpdated()) and FileUtil.updateEnable()):
+    AppAnnieProcessor.dumpAppFromNet()
+    print "get product from file..."
     all_product_maps = FileUtil.getAllKindProductMaps()
-    print "waiting vpn connected(20s)..."
-    time.sleep(20)
+    print "waiting vpn connected(2min)..."
+    time.sleep(120)
     if(OnlineCheck.googleAccessable()):
         for productMapKind in all_product_maps:
             product_map_for_kind = all_product_maps[productMapKind];

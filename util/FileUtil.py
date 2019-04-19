@@ -70,7 +70,7 @@ def saveLog(contentMap):
 '''
 def getAllKindProductMaps():
     productMaps = {}
-    pathdir = PRODUCT_DICT_PATH % Common.getYesterday()
+    pathdir = PRODUCT_DICT_PATH % Common.getPre2day()
     if os.path.exists(pathdir):
         files = os.listdir(pathdir)
         for productFile in files:
