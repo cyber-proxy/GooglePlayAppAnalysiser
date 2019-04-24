@@ -21,7 +21,7 @@ username = "fushikang@security4defender.club"  # 'tsotumu@163.com'
 password = "PS2.com"  # 'Licheng@5*'
 sender = 'fushikang@security4defender.club'
 receiver = ['tsotumu@qq.com']
-receiver = ['tsotumu@qq.com', '196835241@qq.com', '568935836@qq.com']
+# receiver = ['tsotumu@qq.com', '196835241@qq.com', '568935836@qq.com']
 subject = '重要邮件：googleplay产品在线检测报告汇总'
 # 通过Header对象编码的文本，包含utf-8编码信息和Base64编码信息。以下中文名测试ok
 # subject = '中文标题'

@@ -1,0 +1,100 @@
+{
+  "软件与演示": [
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "电视越南 - 所有直播电视频道2019",
+      "rank": "196",
+      "pkg": "com.all_vietnam_tv_for_vitnamien_tv_ha_channels_1.all_vietnam_tv_for_vitnamien_tv_ha_channels_2"
+    }
+  ],
+  "音乐与音频": [
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "Audiomack | Download New Music",
+      "rank": "12",
+      "pkg": "com.audiomack"
+    }
+  ],
+  "社交": [
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "Night live - Live Streaming",
+      "rank": "160",
+      "pkg": "gb.streamity.livevideo"
+    }
+  ],
+  "application": [
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "Audiomack | Download New Music",
+      "rank": "128",
+      "pkg": "com.audiomack"
+    }
+  ],
+  "通信": [
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "browser for craigslist  jobs",
+      "rank": "28",
+      "pkg": "com.browserforcraigslist.apps"
+    }
+  ],
+  "购物": [
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "Coupons for Wish",
+      "rank": "181",
+      "pkg": "com.tomyfreecoupons.wish"
+    }
+  ],
+  "效率": [
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "Voice Typing Keyboard - Type with Voice",
+      "rank": "142",
+      "pkg": "com.voicekeyboard.English.speech.typing"
+    }
+  ],
+  "活动": [
+    {
+      " ret": {
+        "ret_bool_val": false,
+        "ret_except": "none",
+        "status_code": "404"
+      },
+      "name": "Kroger Spirit",
+      "rank": "86",
+      "pkg": "com.kroger.mobile.associateappreciation"
+    }
+  ]
+}
+// <type 'exceptions.Exception'>
+//HTTPSConnectionPool(host='play.google.com', port=443): Max retries exceeded with url: /store/apps/details?id=online.appstation.app (Caused by SSLError(SSLEOFError(8, u'EOF occurred in violation of protocol (_ssl.c:726)'),))
