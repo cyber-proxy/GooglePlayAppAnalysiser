@@ -25,7 +25,7 @@ def getPre2day():
     today=datetime.date.today()
     oneday=datetime.timedelta(days=2)
     yesterday=today-oneday
-    return yesterday.strftime('%Y%m%d')
+    return "20190430"#yesterday.strftime('%Y%m%d')
     # 输出
 
 if __name__ == '__main__':

@@ -13,15 +13,20 @@ from email.header import Header
 import threading
 import time, json
 
+# 18080756604@163.com
+# 登陆密码：a515968239
+# 授权密码：a20190506
+
 '''
     设置smtplib所需的参数
 '''
-smtpserver = "smtp.exmail.qq.com"  # 'smtp.163.com'
-username = "fushikang@security4defender.club"  # 'tsotumu@163.com'
-password = "PS2.com"  # 'Licheng@5*'
-sender = 'fushikang@security4defender.club'
-receiver = ['tsotumu@qq.com']
-# receiver = ['tsotumu@qq.com', '196835241@qq.com', '568935836@qq.com']
+smtpserver = 'smtp.163.com' #"smtp.exmail.qq.com"  # 'smtp.163.com'
+username = "18080756604@163.com" # 'tsotumu@163.com' # "fushikang@security4defender.club"  # 'tsotumu@163.com'
+password = "a20190506"#'Licheng@5*' # "PS2.com"  # 'Licheng@5*'
+sender = "App Online Check<18080756604@163.com>"#'tsotumu@163.com'#'fushikang@security4defender.club'
+receiver = ["LC<tsotumu@qq.com>", 'LC<tsotumu@163.com>']
+cc_receivers = ['LC<tsotumu@qq.com>']
+# receiver = ['luowp<196835241@qq.com', 'hubo<568935836@qq.com>']
 subject = '重要邮件：googleplay产品在线检测报告汇总'
 # 通过Header对象编码的文本，包含utf-8编码信息和Base64编码信息。以下中文名测试ok
 # subject = '中文标题'
@@ -39,10 +44,10 @@ def emailContent(text):
     global msg
     msg = MIMEText(text, 'plain', 'utf-8')
     msg['Subject'] = subject
-    msg['From'] = 'Windows 定时任务'
-    msg['To'] = 'tsotumu@qq.com.com'
+    msg['From'] = sender
     # 收件人为多个收件人,通过join将列表转换为以;为间隔的字符串
     msg['To'] = ";".join(receiver)
+    msg['Cc'] = ";".join(cc_receivers)
     msg['Date'] = '2019-3-28'
 
 
@@ -51,10 +56,14 @@ def emailContent(text):
 
 def login():
     print "login..."
-    smtp.connect(smtpserver)  # 'smtp.163.com')
-    # 我们用set_debuglevel(1)就可以打印出和SMTP服务器交互的所有信息。
-    # smtp.set_debuglevel(1)
-    smtp.login(username, password)
+    try:
+        smtp.connect(smtpserver)  # 'smtp.163.com')
+        # 我们用set_debuglevel(1)就可以打印出和SMTP服务器交互的所有信息。
+        # smtp.set_debuglevel(1)
+        smtp.login(username, password)
+    except Exception:
+        print str(Exception)
+
 
 
 '''发送邮件'''
@@ -154,7 +163,8 @@ def sendXLS():
 
 if __name__ == '__main__':
     print "email main."
-    # login()
-    # time.sleep(3)
-    # sendTaskResult("com.lm.powersecurit xxxxx")
-    sendXLS()
+    for i in  range(0, 100):
+        login()
+        time.sleep(3)
+        sendTaskResult("com.lm.powersecurit xxxxx, " + str(i))
+    # sendXLS()

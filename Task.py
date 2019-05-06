@@ -2,7 +2,7 @@
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-import time
+import time, datetime
 from core import OnlineCheck, AppAnnieProcessor
 from util import Email, FileUtil, Common
 
@@ -11,7 +11,6 @@ from util import Email, FileUtil, Common
         HTTPSConnectionPool(host='www.google.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLError('_ssl.c:710: The handshake operation timed out',),))
 '''
 
-
 '''
     功能需求
     1、输出的结果需要包含排名信息和包名。
@@ -19,7 +18,6 @@ from util import Email, FileUtil, Common
     3、自动拉取appanie信息。
     4、检测前一天的下线信息。
 '''
-
 
 '''周期性检测任务'''
 def task():
@@ -33,8 +31,8 @@ def task():
     AppAnnieProcessor.dumpAppFromNet()
     print "get product from file..."
     all_product_maps = FileUtil.getAllKindProductMaps()
-    print "waiting vpn connected(2min)..."
-    time.sleep(120)
+    print "waiting vpn connected(10min)..."
+    waitfor(OnlineCheck.googleAccessable)
     if(OnlineCheck.googleAccessable()):
         for productMapKind in all_product_maps:
             product_map_for_kind = all_product_maps[productMapKind];
@@ -71,6 +69,18 @@ def task():
         FileUtil.updateEnable()
     else:
         print "不能翻墙，请稍后再试。"
+
+
+def waitfor(getter, timeout=6000, interval=0.5):
+    startTime = datetime.datetime.now()
+    while True:
+        if(getter()):
+            return
+        else:
+            runTime = datetime.datetime.now() - startTime
+            if runTime.seconds >= timeout:
+                raise Exception("time out!")
+            time.sleep(interval)
 
 if __name__ == '__main__':
     task()
