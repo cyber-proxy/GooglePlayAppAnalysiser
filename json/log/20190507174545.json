@@ -1,0 +1,78 @@
+{
+  "图书与工具": [
+    {
+      "name": "Change Your Thinking",
+      "rank": "163",
+      "pkg": "com.webshinobis.changeyourthinking"
+    }
+  ],
+  "餐饮美食": [
+    {
+      "name": "EatStreet Food Delivery App",
+      "rank": "94",
+      "pkg": "com.eatstreet.android"
+    }
+  ],
+  "天气": [
+    {
+      "name": "天气应用 — 今天的实时天气",
+      "rank": "141",
+      "pkg": "com.maryuvarova1.goweather"
+    },
+    {
+      "name": "天气雷达 — 实时地图和警报",
+      "rank": "98",
+      "pkg": "com.weatherapp.goradar"
+    }
+  ],
+  "动漫": [
+    {
+      "name": "Manga Eden Reader - Best Manga Reader",
+      "rank": "139",
+      "pkg": "com.appfree.manga.eden"
+    },
+    {
+      "name": "End Game Wallpaper",
+      "rank": "168",
+      "pkg": "com.appybuilder.dan_fue3.endgame"
+    }
+  ],
+  "地图与导航": [
+    {
+      "name": "全球定位系统 导航 ＆ 方向  -  找 路线， 地图 指南",
+      "rank": "100",
+      "pkg": "livegps.navigationpathfinder.routenavigatorapp.was"
+    }
+  ],
+  "娱乐": [
+    {
+      "name": "Popcorn Time - Free Movies & TV Shows",
+      "rank": "173",
+      "pkg": "com.hd.movie"
+    },
+    {
+      "name": "Call From Guava Juice Simulation",
+      "rank": "74",
+      "pkg": "com.callsimulation.callfromguavajuicesimulation"
+    }
+  ],
+  "购物": [
+    {
+      "name": "Locanto – FREE CLASSIFIEDS",
+      "rank": "160",
+      "pkg": "de.locanto.app"
+    }
+  ],
+  "社交": [
+    {
+      "name": "MobilePatrol Public Safety App",
+      "rank": "34",
+      "pkg": "com.appriss.mobilepatrol"
+    },
+    {
+      "name": "Chat Omega for Omegle",
+      "rank": "173",
+      "pkg": "com.omaapps.chatomega"
+    }
+  ]
+}

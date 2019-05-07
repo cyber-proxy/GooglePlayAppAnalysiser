@@ -26,7 +26,7 @@ password = "a20190506"#'Licheng@5*' # "PS2.com"  # 'Licheng@5*'
 sender = "App Online Check<18080756604@163.com>"#'tsotumu@163.com'#'fushikang@security4defender.club'
 receiver = ["LC<tsotumu@qq.com>", 'LC<tsotumu@163.com>']
 cc_receivers = ['LC<tsotumu@qq.com>']
-receiver = ['luowp<196835241@qq.com', 'hubo<568935836@qq.com>']
+# receiver = ['LC<tsotumu@qq.com>', 'luowp<196835241@qq.com', 'hubo<568935836@qq.com>']
 subject = '重要邮件：googleplay产品在线检测报告汇总'
 # 通过Header对象编码的文本，包含utf-8编码信息和Base64编码信息。以下中文名测试ok
 # subject = '中文标题'
@@ -34,7 +34,6 @@ subject = Header(subject, 'utf-8').encode()
 # 构造邮件对象MIMEMultipart对象
 # 下面的主题，发件人，收件人，日期是显示在邮件页面上的。
 msg = None
-smtp = smtplib.SMTP()
 
 '''构造邮件内容'''
 
@@ -57,10 +56,12 @@ def emailContent(text):
 def login():
     print "login..."
     try:
+        smtp = smtplib.SMTP()
         smtp.connect(smtpserver)  # 'smtp.163.com')
         # 我们用set_debuglevel(1)就可以打印出和SMTP服务器交互的所有信息。
         # smtp.set_debuglevel(1)
         smtp.login(username, password)
+        return smtp
     except Exception:
         print str(Exception)
 
@@ -69,7 +70,7 @@ def login():
 '''发送邮件'''
 
 
-def sendTaskResult(productMsg):
+def sendTaskResult(smtp, productMsg):
     print "send..."
     # print unicode(productMsg, encoding="utf-8")
     try:
@@ -98,10 +99,10 @@ def loginAndSend(content_map):
             content = content + json.dumps(app_info, encoding='UTF-8', ensure_ascii=False) + "\n"
     print str(content)
     try:
-        login()
-        time.sleep(2)
+        smtp = login()
+        time.sleep(3)
         # json.
-        sendTaskResult(content)
+        sendTaskResult(smtp, content)
     except Exception, e:
         print str(Exception) + "\n" + str(e)
 
@@ -112,7 +113,7 @@ def loginAndSend(content_map):
 def sendTaskStart():
     print "sendTaskStart"
     try:
-        login()
+        smtp = login()
         time.sleep(2)
         text = "（邮件发送自定时检测任务）\n在线检测开始执行，2h左右会收到邮件通知检测结果\n\n\n\tDon't Reply."
         emailContent(text)
@@ -128,7 +129,7 @@ def sendTaskStart():
 def sendContent(content):
     print "sendTaskStart"
     try:
-        login()
+        smtp = login()
         time.sleep(2)
         text = "（邮件发送自定时检测任务）\n%s\n\n\n\tDon't Reply." % content
         emailContent(text)
@@ -138,7 +139,7 @@ def sendContent(content):
         print str(Exception) + "\n" + str(e)
 
 
-def sendXLS():
+def sendXLS(smtp):
     global msg
     msg = MIMEMultipart()  # 给定msg类型
     msg['Subject'] = subject
@@ -164,7 +165,7 @@ def sendXLS():
 if __name__ == '__main__':
     print "email main."
     for i in  range(0, 100):
-        login()
+        smtp = login()
         time.sleep(3)
-        sendTaskResult("com.lm.powersecurit xxxxx, " + str(i))
+        sendTaskResult(smtp, "com.lm.powersecurit xxxxx, " + str(i))
     # sendXLS()

@@ -47,7 +47,7 @@ def http_validate(target_url):
 
 '''查看产品页面是否存在'''
 def checkProduct(product):
-    ret = {Common.RET_BOOL_VAL: False, Common.RET_EXCEPT: "none", Common.RET_CODE:-1}
+    ret = {Common.RET_BOOL_VAL: False, Common.RET_EXCEPT: Common.RET_NONE, Common.RET_CODE:-1}
     try:
         addr = ('%s%s' % (URL, product))
         print "request->" +addr

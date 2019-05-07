@@ -25,9 +25,10 @@ def task():
     print "do taks..."
     all_product_maps = {}
     count = 0
-    # Email.sendTaskStart()
+    Email.sendTaskStart()
     offline_map_email = {}
-    offline_map_log = {}
+    recheck_map = {}
+    except_map = []
     # if((not FileUtil.todayUpdated()) and FileUtil.updateEnable()):
     # AppAnnieProcessor.dumpAppFromNet()
     print "get product from file..."
@@ -38,20 +39,46 @@ def task():
     if(OnlineCheck.googleAccessable()):
         paramsList = []
         for productMapKind in all_product_maps:
-            product_map_for_kind = all_product_maps[productMapKind];
+            product_map_for_kind = all_product_maps[productMapKind]
             count = count + 1
             # print "count->" + str(count) + " " + productMapKind
             # print "check %s..." % str(product_map_for_kind)
             for product_pkg in product_map_for_kind:
                 # print "check pkg->%s..." % product_pkg
-                paramsList.append(([product_pkg, productMapKind, product_map_for_kind, offline_map_log, offline_map_email], None))
+                paramsList.append(([product_pkg, productMapKind, product_map_for_kind, recheck_map, offline_map_email], None))
                 # checkOnlineTask(product_pkg, productMapKind, product_map_for_kind, offline_map_log, offline_map_email)
         requestsList = threadpool.makeRequests(checkOnlineTask,paramsList)
         map(myThreadPool.putRequest, requestsList)
         myThreadPool.wait()
+        time.sleep(5)
+        print "recheck exception:\n" + str(recheck_map)
+        for category in  recheck_map:
+            appList = recheck_map[category]
+            for appInfo in appList:
+                ret = OnlineCheck.checkProduct(appInfo["pkg"])
+                if (ret[Common.RET_BOOL_VAL]):
+                    print "%s online" % product_pkg
+                else:
+                    print "%s offline！！！" % product_pkg
+                    # local log content
+                    if(ret[Common.RET_EXCEPT] != Common.RET_NONE):
+                        category_list = except_map.get(category)
+                        if not category_list:
+                            category_list = []
+                            recheck_map[category] = category_list
+                            except_map[category].append(appInfo)
+                    # Email content
+                    if ret[Common.RET_CODE] == str(404):
+                        category_list = offline_map_email.get(category)
+                        if not category_list:
+                            category_list = []
+                            offline_map_email[category] = category_list
+                        offline_map_email[category].append({appInfo})
+                time.sleep(3)
         print "check done."
         Email.loginAndSend(offline_map_email)
-        FileUtil.saveLog(offline_map_log)
+        FileUtil.saveLog(except_map)
+        FileUtil.saveLog(offline_map_email)
         FileUtil.updateEnable()
     else:
         print "不能翻墙，请稍后再试。"
@@ -68,7 +95,7 @@ def waitfor(getter, timeout=6000, interval=0.5):
                 raise Exception("time out!")
             time.sleep(interval)
 
-def checkOnlineTask(product_pkg, productMapKind, product_map_for_kind, offline_map_log, offline_map_email):
+def checkOnlineTask(product_pkg, productMapKind, product_map_for_kind, recheck_map, offline_map_email):
     ret = OnlineCheck.checkProduct(product_pkg)
     if (ret[Common.RET_BOOL_VAL]):
         print "%s online" % product_pkg
@@ -80,11 +107,12 @@ def checkOnlineTask(product_pkg, productMapKind, product_map_for_kind, offline_m
         rank = ran_name[0]
         name = ran_name[1]
         # local log content
-        category_list = offline_map_log.get(category)
-        if not category_list:
-            category_list = []
-            offline_map_log[category] = category_list
-        offline_map_log[category].append({"name": name, "pkg": product_pkg, "rank": rank, " ret": ret})
+        if(ret[Common.RET_EXCEPT] != Common.RET_NONE):
+            category_list = recheck_map.get(category)
+            if not category_list:
+                category_list = []
+                recheck_map[category] = category_list
+                recheck_map[category].append({"name": name, "pkg": product_pkg, "rank": rank, " ret": ret})
         # Email content
         if ret[Common.RET_CODE] == str(404):
             category_list = offline_map_email.get(category)

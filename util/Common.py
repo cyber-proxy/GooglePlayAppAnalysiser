@@ -7,6 +7,7 @@ sys.setdefaultencoding('utf8')
 
 RET_BOOL_VAL = "ret_bool_val"
 RET_EXCEPT = "ret_except"
+RET_NONE = "none"
 RET_CODE = "status_code"
 
 def getTimeStr():
