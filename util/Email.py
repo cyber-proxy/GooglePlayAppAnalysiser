@@ -26,7 +26,7 @@ password = "a20190506"#'Licheng@5*' # "PS2.com"  # 'Licheng@5*'
 sender = "App Online Check<18080756604@163.com>"#'tsotumu@163.com'#'fushikang@security4defender.club'
 receiver = ["LC<tsotumu@qq.com>", 'LC<tsotumu@163.com>']
 cc_receivers = ['LC<tsotumu@qq.com>']
-# receiver = ['luowp<196835241@qq.com', 'hubo<568935836@qq.com>']
+receiver = ['luowp<196835241@qq.com', 'hubo<568935836@qq.com>']
 subject = '重要邮件：googleplay产品在线检测报告汇总'
 # 通过Header对象编码的文本，包含utf-8编码信息和Base64编码信息。以下中文名测试ok
 # subject = '中文标题'
@@ -48,7 +48,7 @@ def emailContent(text):
     # 收件人为多个收件人,通过join将列表转换为以;为间隔的字符串
     msg['To'] = ";".join(receiver)
     msg['Cc'] = ";".join(cc_receivers)
-    msg['Date'] = '2019-3-28'
+    msg['Date'] = '2019-5-7'
 
 
 '''登陆'''

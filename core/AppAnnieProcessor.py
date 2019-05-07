@@ -102,17 +102,21 @@ def login():
 '''请求并解析给定类别的所有app'''
 def getAppsAddres(category):
     print "getApps..."
-    timeStamp = Common.getYesterday_()#"2019-03-30"#time.strftime("%Y-%m-%d", time.localtime())#
-    path = AppAnnieAppAddr%(category,timeStamp)
-    print "path->" + path
-    GET_HEADERS["path"] = path
-    response = requests.get(AppAnnieAppAddr%(category,timeStamp), data=None, headers=GET_HEADERS)
-    result =  response.text
-    # print result
-    resultJson = json.loads(result)
-    rowsList = resultJson["table"]['rows']
-    # print "result->" + result
-    print "code->" + str(response.status_code)
+    rowsList = []
+    try:
+        timeStamp = Common.getYesterday_()#"2019-03-30"#time.strftime("%Y-%m-%d", time.localtime())#
+        path = AppAnnieAppAddr%(category,timeStamp)
+        print "path->" + path
+        GET_HEADERS["path"] = path
+        response = requests.get(AppAnnieAppAddr%(category,timeStamp), data=None, headers=GET_HEADERS)
+        result =  response.text
+        # print result
+        resultJson = json.loads(result)
+        rowsList = resultJson["table"]['rows']
+        # print "result->" + result
+        print "code->" + str(response.status_code)
+    except Exception as e:
+        print str(e)
     return rowsList
 
 '''解析出免费的app排名'''
@@ -169,7 +173,7 @@ def getProductList():
 
 '''获取免费的应用类别里面所有app及其排名'''
 def dumpAppFromNet():
-    Email.sendContent("获取免费的应用类别里面所有app及其排名,开始执行（每2天执行一次）。")
+    # Email.sendContent("获取免费的应用类别里面所有app及其排名,开始执行（每2天执行一次）。")
     categoryMap = FileUtil.getJsonObject(FileUtil.CATEGORY_FILE)
     categoryList = categoryMap.values()
     print "category: " + str(categoryList)
