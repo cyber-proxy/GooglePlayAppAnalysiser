@@ -20,14 +20,14 @@ import time, json
 '''
     设置smtplib所需的参数
 '''
-smtpserver = 'smtp.163.com' #"smtp.exmail.qq.com"  # 'smtp.163.com'
-username = "18080756604@163.com" # 'tsotumu@163.com' # "fushikang@security4defender.club"  # 'tsotumu@163.com'
-password = "a20190506"#'Licheng@5*' # "PS2.com"  # 'Licheng@5*'
-sender = "App Online Check<18080756604@163.com>"#'tsotumu@163.com'#'fushikang@security4defender.club'
+smtpserver = 'smtp.163.com'  # "smtp.exmail.qq.com"  # 'smtp.163.com'
+username = "18080756604@163.com"  # 'tsotumu@163.com' # "fushikang@security4defender.club"  # 'tsotumu@163.com'
+password = "a20190506"  # 'Licheng@5*' # "PS2.com"  # 'Licheng@5*'
+sender = "App Online Check<18080756604@163.com>"  # 'tsotumu@163.com'#'fushikang@security4defender.club'
 receiver = ["LC<tsotumu@qq.com>", 'LC<tsotumu@163.com>']
 cc_receivers = ['LC<tsotumu@qq.com>']
-# receiver = ['LC<tsotumu@qq.com>', 'luowp<196835241@qq.com', 'hubo<568935836@qq.com>']
-subject = '重要邮件：googleplay产品在线检测报告汇总'
+receiver = ['LC<tsotumu@qq.com>', 'luowp<196835241@qq.com>', 'hubo<568935836@qq.com>']
+subject = '重要邮件：GooglePlay产品在线检测报告'
 # 通过Header对象编码的文本，包含utf-8编码信息和Base64编码信息。以下中文名测试ok
 # subject = '中文标题'
 subject = Header(subject, 'utf-8').encode()
@@ -35,9 +35,8 @@ subject = Header(subject, 'utf-8').encode()
 # 下面的主题，发件人，收件人，日期是显示在邮件页面上的。
 msg = None
 
-'''构造邮件内容'''
 
-
+# '''构造邮件内容'''
 def emailContent(text):
     print "text->" + text
     global msg
@@ -50,9 +49,7 @@ def emailContent(text):
     msg['Date'] = '2019-5-7'
 
 
-'''登陆'''
-
-
+# '''登陆'''
 def login():
     print "login..."
     try:
@@ -66,15 +63,12 @@ def login():
         print str(Exception)
 
 
-
-'''发送邮件'''
-
-
+# '''发送邮件'''
 def sendTaskResult(smtp, productMsg):
     print "send..."
     # print unicode(productMsg, encoding="utf-8")
     try:
-        text = "（邮件发送自定时检测任务）\n未能检测到在线的信息如下：\n\n%s\n\n\tDon't Reply." % (productMsg)
+        text = "未能检测到在线的信息如下：\n\n%s\n\n\t" % (productMsg)
         emailContent(text)
         smtp.sendmail(sender, receiver, msg.as_string())
         smtp.quit()
@@ -82,9 +76,7 @@ def sendTaskResult(smtp, productMsg):
         print str(Exception) + "\n" + str(e)
 
 
-'''登陆和发送'''
-
-
+# '''登陆和发送'''
 def loginAndSend(content_map):
     print "login and send"
     # contentMap = json.dumps(content, encoding="UTF-8", ensure_ascii=False)
@@ -94,8 +86,8 @@ def loginAndSend(content_map):
     for category in content_map:
         content = content + "\n\n%s\n=====================\n" % (category)
         category_list = content_map[category]
-        sorted_by_rank_list = sorted(category_list, cmp=lambda a,b: cmp(int(a["rank"]), int(b["rank"])))
-        for app_info in  sorted_by_rank_list:
+        sorted_by_rank_list = sorted(category_list, cmp=lambda a, b: cmp(int(a["rank"]), int(b["rank"])))
+        for app_info in sorted_by_rank_list:
             content = content + json.dumps(app_info, encoding='UTF-8', ensure_ascii=False) + "\n"
     print str(content)
     try:
@@ -107,15 +99,13 @@ def loginAndSend(content_map):
         print str(Exception) + "\n" + str(e)
 
 
-'''发送任务开始提醒邮件'''
-
-
+# '''发送任务开始提醒邮件'''
 def sendTaskStart():
     print "sendTaskStart"
     try:
         smtp = login()
         time.sleep(2)
-        text = "（邮件发送自定时检测任务）\n在线检测开始执行，2h左右会收到邮件通知检测结果\n\n\n\tDon't Reply."
+        text = "\n在线检测开始执行通知：\n10min左右会收到邮件通知检测结果。\n\n\n\t"
         emailContent(text)
         smtp.sendmail(sender, receiver, msg.as_string())
         smtp.quit()
@@ -123,9 +113,7 @@ def sendTaskStart():
         print str(Exception) + "\n" + str(e)
 
 
-'''发送自定义内容'''
-
-
+# '''发送自定义内容'''
 def sendContent(content):
     print "sendTaskStart"
     try:
@@ -164,7 +152,7 @@ def sendXLS(smtp):
 
 if __name__ == '__main__':
     print "email main."
-    for i in  range(0, 100):
+    for i in range(0, 100):
         smtp = login()
         time.sleep(3)
         sendTaskResult(smtp, "com.lm.powersecurit xxxxx, " + str(i))

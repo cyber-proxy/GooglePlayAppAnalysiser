@@ -31,19 +31,22 @@ def getPre2day():
 
 if __name__ == '__main__':
     # print time.strftime("%Y-%m-%d", time.localtime())
-    # aMap = {"asdf":1, "asdfasdf":False, "asdfasdfaxx":True, "x":"yyyy"}
-    # aMap["aas"] ="xxxx"
-    # aMap["aasa"] = "xxxx"
-    # aMap["aasv"] = "今天"
-    # aMap ["com.aaa"] = [{"asdf":1}, {"234":2}]
+    aMap = {"asdf":1, "asdfasdf":False, "asdfasdfaxx":True, "x":"yyyy"}
+    aMap["aas"] ="xxxx"
+    aMap["aasa"] = "xxxx"
+    aMap["aasv"] = "今天"
+    aMap ["com.aaa"] = [{"asdf":1}, {"234":2}]
     # print json.dumps(aMap, encoding='UTF-8', ensure_ascii=False)
     # trtime= time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
     # print trtime
-    # if not aMap.get('a'):
-    #     print "zaa"
+    aMap.get("xxxxxxxxx")
+    if not aMap['zzz']:
+        print "asdfasdf"
+    if not aMap.get('zzzz'):
+        print "zaa"
     # list = [{"rank":"90", "name":"1"},{"rank":"2222"}, {"rank":"110"}]
     # print str(list)
     # sl = sorted(list, cmp= lambda x,y:cmp(int(x["rank"]), int(y["rank"])))
     # print str(sl)
-    print getPre2day()
-    print time.localtime(time.time())
+    # print getPre2day()
+    # print time.localtime(time.time())

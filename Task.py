@@ -30,12 +30,12 @@ def task():
     recheck_map = {}
     except_map = []
     # if((not FileUtil.todayUpdated()) and FileUtil.updateEnable()):
-    # AppAnnieProcessor.dumpAppFromNet()
+    AppAnnieProcessor.dumpAppFromNet()
     print "get product from file..."
     all_product_maps = FileUtil.getAllKindProductMaps()
     print "waiting vpn connected(10min)..."
     waitfor(OnlineCheck.googleAccessable)
-    myThreadPool = threadpool.ThreadPool(100)
+    myThreadPool = threadpool.ThreadPool(50)
     if(OnlineCheck.googleAccessable()):
         paramsList = []
         for productMapKind in all_product_maps:
@@ -49,6 +49,7 @@ def task():
                 # checkOnlineTask(product_pkg, productMapKind, product_map_for_kind, offline_map_log, offline_map_email)
         requestsList = threadpool.makeRequests(checkOnlineTask,paramsList)
         map(myThreadPool.putRequest, requestsList)
+        print "wait..."
         myThreadPool.wait()
         time.sleep(5)
         print "recheck exception:\n" + str(recheck_map)
