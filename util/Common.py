@@ -22,9 +22,9 @@ def getYesterday_():
     yesterday=today-oneday
     return yesterday.strftime('%Y-%m-%d')
 
-def getPre2day():
+def getPreDay(day):
     today=datetime.date.today()
-    oneday=datetime.timedelta(days=2)
+    oneday=datetime.timedelta(days=day)
     yesterday=today-oneday
     return yesterday.strftime('%Y%m%d')
     # 输出

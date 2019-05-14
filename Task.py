@@ -25,12 +25,13 @@ def task():
     print "do taks..."
     all_product_maps = {}
     count = 0
-    Email.sendTaskStart()
+    # Email.sendTaskStart()
     offline_map_email = {}
     recheck_map = {}
     except_map = []
     # if((not FileUtil.todayUpdated()) and FileUtil.updateEnable()):
     AppAnnieProcessor.dumpAppFromNet()
+    return
     print "get product from file..."
     all_product_maps = FileUtil.getAllKindProductMaps()
     print "waiting vpn connected(10min)..."

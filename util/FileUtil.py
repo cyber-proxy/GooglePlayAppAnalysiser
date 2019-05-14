@@ -64,22 +64,30 @@ def saveLog(contentMap):
     json.dump(contentMap, logFile, encoding='UTF-8', ensure_ascii=False)
     logFile.close()
 
+
 '''
     从json\product\\本地获取产品信息
     :returns 
 '''
 def getAllKindProductMaps():
     productMaps = {}
-    pathdir = PRODUCT_DICT_PATH % Common.getPre2day()
+    day = 1
+    pathdir = PRODUCT_DICT_PATH % Common.getPreDay(day)
+    while not os.path.exists(pathdir):
+        day = day + 1
+        print "get pre %d day product info."%(day)
+        pathdir = PRODUCT_DICT_PATH % Common.getPreDay(day)
     if os.path.exists(pathdir):
         files = os.listdir(pathdir)
         for productFile in files:
-            file = open(os.path.join(pathdir,productFile), 'r')
+            file = open(os.path.join(pathdir, productFile), 'r')
             # print productFile + " ----" + productFile.split('.')[0]
             productMaps[productFile.split('.')[0]] = json.load(file)
             # break # for test
-    print str(productMaps)
+    else:
+        print str(productMaps)
     return productMaps
+
 
 def saveProduct(category, content):
     print "saving..."
@@ -87,12 +95,13 @@ def saveProduct(category, content):
     if not os.path.exists(pathdir):
         os.makedirs(pathdir)
     saveFile = pathdir + str(category) + ".json"
-    file = open(saveFile,'w')
+    file = open(saveFile, 'w')
     json.dump(content, file)
     # saveStr = "\n".join(str(app) for app in  content)
     # file.writelines(saveStr)
     file.close()
     print "saved"
+
 
 '''
     获取类别
@@ -100,13 +109,14 @@ def saveProduct(category, content):
     :returns 类别的中文名
 '''
 def getCategoryName(cagegory_code):
-    print "read category->%s"%cagegory_code
+    print "read category->%s" % cagegory_code
     category_map = json.load(open(CATEGORY_FILE, "r"));
-    for item in  category_map.items():
-        if(str(item[1]) == str(cagegory_code)):
+    for item in category_map.items():
+        if (str(item[1]) == str(cagegory_code)):
             print "get->" + item[0]
             return str(item[0])
     return "No Category"
+
 
 if __name__ == '__main__':
     print "FileUtil."
@@ -119,4 +129,3 @@ if __name__ == '__main__':
     #     print "updated"
     # else:
     #     print "no updated"
-
