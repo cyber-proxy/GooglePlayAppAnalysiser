@@ -71,7 +71,7 @@ def saveLog(contentMap):
 '''
 def getAllKindProductMaps():
     productMaps = {}
-    day = 1
+    day = 2
     pathdir = PRODUCT_DICT_PATH % Common.getPreDay(day)
     while not os.path.exists(pathdir):
         day = day + 1
